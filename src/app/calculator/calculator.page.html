@@ -1,0 +1,42 @@
+<ion-header [translucent]="true">
+  <div>
+    <ion-buttons slot="start">
+      <ion-img
+        id="logo"
+        src="assets/img/logo.png"
+        alt="Logo distribuidora los 3"
+      ></ion-img>
+    </ion-buttons>
+    <ion-title>Calculadora precio de venta</ion-title>
+  </div>
+</ion-header>
+
+  <div class="ion-text-center mt-3 mb-3" id="welcome_text">
+    <h1>Bienvenido {{ user }}</h1>
+  </div>
+
+  <ion-list>
+    <ion-item class="ion-margin">
+      <ion-label position="floating">Valor neto</ion-label>
+      <ion-input type="text" placeholder="Ingrese Valor neto" [(ngModel)]="net_value" class="animated_inputs"></ion-input>
+    </ion-item>
+
+    <ion-item class="ion-margin">
+      <ion-label position="floating">Categoría</ion-label>
+      <!-- Bring categories from json -->
+      <ion-select [(ngModel)]="category">
+        <ion-select-option value="whisky">Whisky</ion-select-option>
+        <ion-select-option value="pisco">Pisco</ion-select-option>
+        <ion-select-option value="cerveza">Cerveza</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+
+  <ion-button expand="block" fill="outline" (click)="calculate()">Calcular</ion-button>
+</ion-content>
+
+<ion-footer class="ion-text-center">
+  <ion-toolbar>
+    <ion-title>App desarrollada por Matias Ruiz</ion-title>
+  </ion-toolbar>
+</ion-footer>
