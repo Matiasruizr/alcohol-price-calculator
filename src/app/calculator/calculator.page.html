@@ -40,10 +40,10 @@
 
   <mat-card *ngIf="sell_price > 0" id="result" class="ion-margin animate-if">
     <mat-card-content>
-      <h2>El precio de venta sugerido es: $ {{ sell_price }}</h2>
-      <h3>El margen de ganancia es: $ {{  price_with_margin - net_value }}</h3>
-      <h3>El impuesto especifico es: $ {{  price_with_specific_tax - price_with_margin }}</h3>
-      <h3>El IVA de este producto es {{ sell_price - price_with_specific_tax }} </h3>
+      <h2>El precio de venta sugerido es: $ {{ sell_price | number: '1.0-0' }}</h2>
+      <h3>El margen de ganancia es: $ {{  price_with_margin - net_value | number: '1.0-0' }}</h3>
+      <h3>El impuesto especifico es: $ {{  price_with_specific_tax - price_with_margin | number: '1.0-0' }}</h3>
+      <h3>El IVA de este producto es: $ {{ sell_price - price_with_specific_tax | number: '1.0-0'}} </h3>
     </mat-card-content>
   </mat-card>
 </ion-content>
