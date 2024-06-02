@@ -1,13 +1,40 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>home</ion-title>
+    <ion-title>Inicio</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">home</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <mat-card class="example-card">
+    <mat-card-header>
+      <div mat-card-avatar class="example-header-image"></div>
+      <mat-card-title>Bienvenido al panel de herramientas de venta para tu distribuidora</mat-card-title>
+      <mat-card-subtitle>
+        Como distribuidora compartimos al mercado nuestras herramientas de venta para generar
+        valor a nuestros clientes
+      </mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image src="assets/img/logo.png" alt="Logo distribuidora los 3" id="logo_home">
+    <mat-card-content>
+      <p>
+        En esta aplicación en su primera versión, podrás encontrar las siguientes herramientas: 
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <ul>
+        <li>
+          <a [routerLink]="['/login']">Inicio de sesión</a>
+        </li>
+        <li>
+          <a [routerLink]="['/calculator']">Calculadora de precio de venta (require inicio de sesión)</a>  
+        </li>
+        <li>
+          <a [routerLink]="['/taxes']">Impuestos por categorías</a>
+        </li>
+        <li>
+          <a [routerLink]="['/market-margins']">Margenes de mercado por categorías</a>
+        </li>
+      </ul>
+    </mat-card-actions>
+  </mat-card>
 </ion-content>

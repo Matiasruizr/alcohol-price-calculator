@@ -1,0 +1,14 @@
+#logo_home {
+  max-width: 300px;
+  margin: 25px auto 35px;
+  animation: mymove 2s infinite linear;
+}
+
+
+@keyframes mymove {
+  0%   {top: 0px;}
+  25%  {top: 10px;}
+  50%  {top: 20px;}
+  75%  {top: 10px}
+  100% {top: 0px;}
+}
