@@ -1,38 +1,46 @@
 <ion-header [translucent]="true">
-  <div>
-    <ion-buttons slot="start">
+  <ion-toolbar>
+    <div slot="start">
       <ion-img
         id="logo"
         src="assets/img/logo.png"
         alt="Logo distribuidora los 3"
       ></ion-img>
-    </ion-buttons>
+    </div>
     <ion-title>Calculadora precio de venta</ion-title>
-  </div>
+  </ion-toolbar>
 </ion-header>
-
-  <div class="ion-text-center mt-3 mb-3" id="welcome_text">
+<ion-content>
+  <div class="ion-text-center ion-margin" id="welcome_text">
     <h1>Bienvenido {{ user }}</h1>
   </div>
 
   <ion-list>
     <ion-item class="ion-margin">
-      <ion-label position="floating">Valor neto</ion-label>
+      <ion-label position="floating">Ingresa el valor neto del producto</ion-label>
       <ion-input type="text" placeholder="Ingrese Valor neto" [(ngModel)]="net_value" class="animated_inputs"></ion-input>
     </ion-item>
 
     <ion-item class="ion-margin">
-      <ion-label position="floating">Categoría</ion-label>
-      <!-- Bring categories from json -->
+      <ion-label position="floating">Ingresa la categoría del producto</ion-label>
       <ion-select [(ngModel)]="category">
-        <ion-select-option value="whisky">Whisky</ion-select-option>
-        <ion-select-option value="pisco">Pisco</ion-select-option>
-        <ion-select-option value="cerveza">Cerveza</ion-select-option>
+        <ion-select-option *ngFor="let item of categories" value="{{item.name }}">
+          {{ item.name }}
+        </ion-select-option>
       </ion-select>
     </ion-item>
-
+  </ion-list>
 
   <ion-button expand="block" fill="outline" (click)="calculate()">Calcular</ion-button>
+
+  <mat-card *ngIf="sell_price > 0" id="result" class="ion-margin animate-if">
+    <mat-card-content>
+      <h2>El precio de venta sugerido es: $ {{ sell_price }}</h2>
+      <h3>El margen de ganancia es: $ {{  price_with_margin - net_value }}</h3>
+      <h3>El impuesto especifico es: $ {{  price_with_specific_tax - price_with_margin }}</h3>
+      <h3>El IVA de este producto es {{ sell_price - price_with_specific_tax }} </h3>
+    </mat-card-content>
+  </mat-card>
 </ion-content>
 
 <ion-footer class="ion-text-center">

@@ -7,6 +7,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {provideNativeDateAdapter} from '@angular/material/core';
 import { CalculatorPage } from './calculator.page';
+import {MatCardModule} from '@angular/material/card';
 
 import { CalculatorPageRoutingModule } from './calculator-routing.module';
 
@@ -20,6 +21,7 @@ import { CalculatorPageRoutingModule } from './calculator-routing.module';
     MatInputModule,
     MatFormFieldModule,
     MatDatepickerModule,
+    MatCardModule,
   ],
   providers: [provideNativeDateAdapter()],
   declarations: [CalculatorPage]

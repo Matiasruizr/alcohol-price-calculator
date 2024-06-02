@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import type { Animation } from '@ionic/angular';
 import { AnimationController } from '@ionic/angular';
+import { categories } from '../../assets/data/categories';
 
 @Component({
   selector: 'app-home',
@@ -11,8 +12,13 @@ import { AnimationController } from '@ionic/angular';
 })
 export class CalculatorPage {
   user: string = ""
-  valor_neto: number = 0
+  net_value: number = 0
   category: string = ""
+  categories = categories;
+  sell_price: number = 0;
+  price_with_margin: number = 0;
+  price_with_specific_tax: number = 0;
+  iva: number = 1.19;
 
   private titleAnimaton: Animation = {} as Animation;
 
@@ -30,6 +36,11 @@ export class CalculatorPage {
   }
 
   ngAfterViewInit() {
+    // Validate  if user exist, otherwise return error and redirect to login
+    if (!this.user) {
+      this.presentAlert("Usuario no encontrado", "Porfavor inicia sesión");
+      this.router.navigate(['/login']);
+    }
     const element = document.querySelector('#welcome_text') as HTMLElement;
     this.titleAnimaton =  this.leftToRightAnimation(element)
     this.titleAnimaton.play();
@@ -37,12 +48,20 @@ export class CalculatorPage {
 
 
   clean() {
-    this.valor_neto = 0;
+    this.net_value = 0;
     this.category = "";
   }
 
   calculate() {
-    console.log("calculating")
+    const category = this.categories.find((element) => element.name === this.category);
+    if (category) {
+      const iva = 1.19;
+      this.price_with_margin = this.net_value * (1 + (category?.margin / 100));
+      this.price_with_specific_tax = this.price_with_margin * (1 + (category?.tax / 100));
+      this.sell_price = this.price_with_specific_tax * iva;
+    } else {
+      this.presentAlert("Error", "No se encontro la categoria");
+    }
   }
 
   leftToRightAnimation = (

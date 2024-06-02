@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { categories } from '../../assets/data/categories';
 
 @Component({
   selector: 'app-taxes',
@@ -6,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./taxes.page.scss'],
 })
 export class TaxesPage implements OnInit {
+
+  displayedColumns: string[] = ['position', 'name', 'tax'];
+  dataSource = categories;
 
   constructor() { }
 
