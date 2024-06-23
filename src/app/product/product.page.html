@@ -1,0 +1,40 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Editar producto</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Editar producto</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-content>
+    <ion-list>
+      <ion-item>
+        <ion-label>Producto</ion-label>
+        <ion-input type="text" placeholder="Ingrese nombre del producto" [(ngModel)]="name" ></ion-input>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>Valor neto</ion-label>
+        <ion-input type="text" placeholder="Ingrese Valor neto" [(ngModel)]="net_value" ></ion-input>
+      </ion-item>
+
+      <!-- Category input -->
+      <ion-item>
+        <ion-label>Categoría</ion-label>
+        <ion-select [(ngModel)]="category">
+          <ion-select-option *ngFor="let item of categories" value="{{item.name }}">
+            {{ item.name }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+
+    <ion-button expand="block" fill="outline" (click)="update()">Actualizar producto</ion-button>
+    <ion-button expand="block" fill="outline" (click)="delete()">Eliminar producto</ion-button>
+    <ion-button expand="block" fill="outline" routerLink="/calculator">Volver a la calculadora</ion-button>
+  </ion-content>
+</ion-content>

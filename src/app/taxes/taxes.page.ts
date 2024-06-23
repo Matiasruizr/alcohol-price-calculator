@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { categories } from '../../assets/data/categories';
+import { ApiService } from '../api.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-taxes',
@@ -7,13 +8,21 @@ import { categories } from '../../assets/data/categories';
   styleUrls: ['./taxes.page.scss'],
 })
 export class TaxesPage implements OnInit {
-
   displayedColumns: string[] = ['position', 'name', 'tax'];
-  dataSource = categories;
+  dataSource: any[] = [];
+  
+  constructor(private http: HttpClient, private api: ApiService) { }
 
-  constructor() { }
-
-  ngOnInit() {
+  async ngOnInit() {
+    this.api.getCategories().subscribe({
+      next: (data: any) => {
+        this.dataSource = data;
+      },
+      error: (error: any) => {
+        console.error('Error loading categories', error);
+        return []
+      },
+    });
   }
 
 }

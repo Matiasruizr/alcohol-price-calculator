@@ -17,10 +17,15 @@
 </ion-header>
 <ion-content>
   <div class="ion-text-center ion-margin" id="welcome_text">
-    <h1>Bienvenido {{ user }}</h1>
+    <h1>Bienvenido</h1>
   </div>
 
   <ion-list>
+    <ion-item class="ion-margin">
+      <ion-label position="floating">Ingresa el nombre del producto</ion-label>
+      <ion-input type="text" placeholder="Ingrese nombre del producto" [(ngModel)]="name" class="animated_inputs"></ion-input>
+    </ion-item>
+
     <ion-item class="ion-margin">
       <ion-label position="floating">Ingresa el valor neto del producto</ion-label>
       <ion-input type="text" placeholder="Ingrese Valor neto" [(ngModel)]="net_value" class="animated_inputs"></ion-input>
@@ -47,6 +52,34 @@
     </mat-card-content>
   </mat-card>
 </ion-content>
+
+<!-- Display all the products on a table-->
+<ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label>Producto</ion-label>
+      <ion-label>Valor neto</ion-label>
+      <ion-label>Categoria</ion-label>
+      <ion-label>Precio de venta</ion-label>
+      <!-- add blanck labels for delete and edit actions -->
+      <ion-label></ion-label>
+      <ion-label></ion-label>
+    </ion-item>
+    <ion-item *ngFor="let product of products">
+      <ion-label>{{ product.name }}</ion-label>
+      <ion-label>{{ product.net_value }}</ion-label>
+      <ion-label>{{ product.category }}</ion-label>
+      <ion-label>{{ calculatePrice(product.net_value, product.category).sell_price | number: '1.0-0' }}</ion-label>
+      <ion-button fill="clear" (click)="deleteProduct(product.id)">
+        <ion-icon name="trash"></ion-icon>
+      </ion-button>
+      <!-- Go to see product page -->
+      <ion-button fill="clear" routerLink="/product/{{ product.id }}">
+        <ion-icon name="eye"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
 
 <ion-footer class="ion-text-center">
   <ion-toolbar>
