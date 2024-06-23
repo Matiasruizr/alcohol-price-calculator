@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-
+import { authGuard } from './guards/auth.guard';
 const routes: Routes = [
   {
     path: 'login',
@@ -8,7 +8,8 @@ const routes: Routes = [
   },
   {
     path: 'calculator',
-    loadChildren: () => import('./calculator/calculator.module').then( m => m.CalculatorPageModule)
+    loadChildren: () => import('./calculator/calculator.module').then( m => m.CalculatorPageModule),
+    canActivate: [authGuard],
   },
   {
     path: '',
@@ -29,10 +30,28 @@ const routes: Routes = [
   },
   {
     path: 'product/:id',
-    loadChildren: () => import('./product/product.module').then( m => m.ProductPageModule)
+    loadChildren: () => import('./product/product.module').then( m => m.ProductPageModule),
+    canActivate: [authGuard],
   },
-];
-
+  {
+    path: 'camera',
+    loadChildren: () => import('./camera/camera.module').then( m => m.CameraPageModule)
+  },
+  {
+    path: 'sucursales',
+    loadChildren: () => import('./sucursales/sucursales.module').then( m => m.SucursalesPageModule)
+  },
+  {
+    path: 'not-found',
+    loadChildren: () => import('./not-found/not-found.module').then( m => m.NotFoundPageModule)
+  },
+  {
+    path: '**',
+    redirectTo: 'not-found',
+    pathMatch: 'full'
+  },
+  ];
+  
 @NgModule({
   imports: [
     RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })

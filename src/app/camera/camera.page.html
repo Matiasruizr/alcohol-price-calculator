@@ -1,0 +1,18 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Camera</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-button expand="block" (click)="takePhoto()">Tomar una foto</ion-button>
+  
+  <ion-card *ngIf="photo">
+    <ion-card-header>Aqui esta la foto 🖼️</ion-card-header>
+    <ion-card-content>
+      <img [src]="photo" *ngIf="photo" width="100%">
+    </ion-card-content>
+  </ion-card>
+  <ion-button expand="block" routerLink="/home" color="secondary">Volver al inicio</ion-button>
+
+</ion-content>

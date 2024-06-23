@@ -144,4 +144,11 @@ export class CalculatorPage {
   
     await alert.present();
   }
+
+  closeSession() {
+    localStorage.setItem('active_session', 'no');
+    localStorage.setItem('user', '');
+    this.router.navigate(['/login']);
+  }
+
 }
