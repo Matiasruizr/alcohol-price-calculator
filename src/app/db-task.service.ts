@@ -23,6 +23,7 @@ export class DbTaskService {
         this.database = db;
         this.createSessionTable();
         this.createProductsTable();
+        this.createCategoryTable();
         this.registerSession("los3", 123456);
         this.isDbReady.next(true);
       }).catch(e => console.log("error creating db", e));
@@ -39,12 +40,19 @@ export class DbTaskService {
 
   //  Genera las tablas necesarias para el funcionamiento de la sesion. 
   async createProductsTable() {
-    const productsTable: string = "CREATE TABLE IF NOT EXISTS products(sku VARCHAR(12) PRIMARY KEY NOT NULL, name VARCHAR(30) NOT NULL, net_value INTEGER NOT NULL, category VARCHAR(30) NOT NULL);";
+    const productsTable: string = "CREATE TABLE IF NOT EXISTS products(id INTEGER PRIMARY KEY NOT NULL, name VARCHAR(30) NOT NULL, net_value INTEGER NOT NULL, category VARCHAR(30) NOT NULL);";
     return this.database?.executeSql(productsTable, [])
       .then(res => console.log('Tabla creada ', res))
       .catch(e => console.log('error creando la tabla', e));
   }
 
+  async createCategoryTable() {
+    // Table category must have id, name, tax (can be a decimal), position and margin (can be a decimal)
+    const categoryTable: string = "CREATE TABLE IF NOT EXISTS categories(id INTEGER PRIMARY KEY NOT NULL, name VARCHAR(30) NOT NULL, tax DECIMAL NOT NULL, position INTEGER NOT NULL, margin DECIMAL NOT NULL);";
+    return this.database?.executeSql(categoryTable, [])
+      .then(res => console.log('Tabla creada ', res))
+      .catch(e => console.log('error creando la tabla', e));
+  }
 
   // Consulta si existe alguna sesión activa.
   async activeSessionExists() {
@@ -118,26 +126,26 @@ export class DbTaskService {
   }
 
   // Generar una función que permita crear un producto
-  async createProduct(sku: string, name: string, net_value: number, category: string) {
-    let data = [sku, name, net_value, category];
-    return this.database?.executeSql('INSERT INTO products(sku, name, net_value, category) VALUES (?, ?, ?, ?)', data)
+  async createProduct(id: number, name: string, net_value: number, category: string) {
+    let data = [id, name, net_value, category];
+    return this.database?.executeSql('INSERT INTO products(id, name, net_value, category) VALUES (?, ?, ?, ?)', data)
       .then(res => {
         console.log(res);
       });
   }
 
   // Generar una función que permita actualizar un producto
-  async updateProduct(sku: string, name: string, net_value: number, category: string) {
-    let data = [name, net_value, category, sku];
-    return this.database?.executeSql('UPDATE products SET name = ?, net_value = ?, category = ? WHERE sku = ?', data)
+  async updateProduct(id: number, name: string, net_value: number, category: string) {
+    let data = [name, net_value, category, id];
+    return this.database?.executeSql('UPDATE products SET name = ?, net_value = ?, category = ? WHERE id = ?', data)
       .then(res => {
         console.log(res);
       });
   }
 
   // Generar una función que permita eliminar un producto
-  async deleteProduct(sku: string) {
-    return this.database?.executeSql('DELETE FROM products WHERE sku = ?', [sku])
+  async deleteProduct(id: number) {
+    return this.database?.executeSql('DELETE FROM products WHERE id = ?', [id])
       .then(res => {
         console.log(res);
       });
@@ -150,23 +158,54 @@ export class DbTaskService {
       if (res.rows.length > 0) {
         for (var i = 0; i < res.rows.length; i++) {
           items.push({
-            sku: res.rows.item(i).sku,
+            id: res.rows.item(i).id,
             name: res.rows.item(i).name,
             net_value: res.rows.item(i).net_value,
             category: res.rows.item(i).category,
           });
-          console.log("Producto: " + res.rows.item(i).name + " SKU: " + res.rows.item(i).sku);
+          console.log("Producto: " + res.rows.item(i).name + " id: " + res.rows.item(i).id);
         }
       }
       return items;
     });
+  }
+  
+  async findProduct(id: number) {
+    return this.database?.executeSql('SELECT * FROM products WHERE id = ?', [id])
+      .then(res => {
+        if (res.rows.length > 0) {
+          return {
+            id: res.rows.item(0).id,
+            name: res.rows.item(0).name,
+            net_value: res.rows.item(0).net_value,
+            category: res.rows.item(0).category,
+          }
+        } else {
+          return null;
+        }
+      });
   }
 
   dbState() {
     return this.isDbReady.asObservable();
   }
 
-  fetchNoticias(): Observable<any> {
-    return this.listSessions.asObservable();
+  async findCategories() {
+    return this.database?.executeSql('SELECT * FROM categories', []).then(res => {
+      let items: any[] = [];
+      if (res.rows.length > 0) {
+        for (var i = 0; i < res.rows.length; i++) {
+          items.push({
+            id: res.rows.item(i).id,
+            name: res.rows.item(i).name,
+            tax: res.rows.item(i).tax,
+            position: res.rows.item(i).position,
+            margin: res.rows.item(i).margin,
+          });
+          console.log("Categoria: " + res.rows.item(i).name + " id: " + res.rows.item(i).id);
+        }
+      }
+      return items;
+    });
   }
 }

@@ -23,8 +23,7 @@ export class SucursalesPage implements OnInit {
   async initMap() {
     try { 
       const coordinates = await Geolocation['getCurrentPosition']();
-      console.log('Current position:', coordinates); // Working with new way to call Geolocation
-
+      console.log('Current position:', coordinates);
       const mapOptions = {
         center: new google.maps.LatLng(coordinates.coords.latitude, coordinates.coords.longitude),
         zoom: 20,

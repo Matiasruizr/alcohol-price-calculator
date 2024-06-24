@@ -4,6 +4,7 @@ import { AlertController } from '@ionic/angular';
 import type { Animation } from '@ionic/angular';
 import { AnimationController } from '@ionic/angular';
 import { ApiService } from '../api.service';
+import { DbTaskService } from '../db-task.service';
 
 @Component({
   selector: 'app-home',
@@ -28,7 +29,8 @@ export class CalculatorPage {
     private activatedRoute: ActivatedRoute,
     private AlertController: AlertController,
     private animationCtrl: AnimationController,
-    private api: ApiService
+    private api: ApiService,
+    private dbService: DbTaskService,
   ) {}
 
   ngAfterViewInit() {
@@ -40,9 +42,12 @@ export class CalculatorPage {
       next: (data: any) => {
         this.categories = data;
       },
-      error: (error: any) => {
-        console.error('Error loading categories', error);
-        return []
+      error: async (error: any) => {
+        console.error('Error loading categories from API', error);
+        const categoriesFromDb: any[] | undefined = await this.dbService.findCategories();
+        if (categoriesFromDb) {
+          this.categories = categoriesFromDb;
+        }
       },
     });
 
@@ -50,9 +55,12 @@ export class CalculatorPage {
       next: (data: any) => {
         this.products = data;
       },
-      error: (error: any) => {
-        console.error('Error loading categories', error);
-        return []
+      error: async (error: any) => {
+        console.error('Error loading product from API', error);
+        const productsFromDb = await this.dbService.findProducts();
+        if (productsFromDb) {
+          this.products = productsFromDb;
+        }
       },
     });
   }
@@ -97,9 +105,10 @@ export class CalculatorPage {
           console.log(data);
           this.presentAlert("Producto creado", "El producto fue creado con exito");
           this.products.push(data);
+          this.dbService.createProduct(data.id, this.name, this.net_value, this.category);
         },
         error: (error: any) => {
-          console.error('Error loading categories', error);
+          console.error('Error creando producto', error);
           return []
         },
       });
@@ -113,9 +122,10 @@ export class CalculatorPage {
       next: (data: any) => {
         this.presentAlert("Producto eliminado", "El producto fue eliminado con exito");
         this.products = this.products.filter((element) => element.id !== productId);
+        this.dbService.deleteProduct(productId);
       },
       error: (error: any) => {
-        console.error('Error loading categories', error);
+        console.error('Error borrando producto', error);
         return []
       },
     });

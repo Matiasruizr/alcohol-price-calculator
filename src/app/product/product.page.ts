@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../api.service';
-// import NavParams
 import { ActivatedRoute } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
-
+import { DbTaskService } from '../db-task.service';
 
 @Component({
   selector: 'app-product',
@@ -13,7 +12,6 @@ import { Router } from '@angular/router';
 })
 export class ProductPage implements OnInit {
   product: any = {};
-   // get the product id from the url
   product_id: any;
   name: string = "";
   net_value: number = 0;
@@ -24,25 +22,27 @@ export class ProductPage implements OnInit {
     private api: ApiService,
     private activatedRoute: ActivatedRoute,
     private AlertController: AlertController,
-    private router: Router
+    private router: Router,
+    private dbService: DbTaskService,
   ) { 
     // get the product id from the url
     this.product_id = this.activatedRoute.snapshot.paramMap.get('id');
-    console.log(this.product_id)
-
   }
 
 
-  ngOnInit() {
+  async ngOnInit() {
     this.api.getProduct(this.product_id).subscribe({
       next: (data: any) => {
         this.name = data.name;
         this.net_value = data.net_value;
         this.category = data.category;
       },
-      error: (error: any) => {
-        console.error('Error loading categories', error);
-        return []
+      error: async (error: any) => {
+        console.error('Error loading product from API', error);
+        const productFromDb = await this.dbService.findProduct(this.product_id);
+        this.name = productFromDb?.name;
+        this.net_value = productFromDb?.net_value;
+        this.category = productFromDb?.category;
       },
     });
 
@@ -50,9 +50,12 @@ export class ProductPage implements OnInit {
       next: (data: any) => {
         this.categories = data;
       },
-      error: (error: any) => {
-        console.error('Error loading categories', error);
-        return []
+      error: async (error: any) => {
+        console.error('Error loading categories from API', error);
+        const categoriesFromDb: any[] | undefined = await this.dbService.findCategories();
+        if (categoriesFromDb) {
+          this.categories = categoriesFromDb;
+        }
       },
     });
   }
@@ -68,11 +71,10 @@ export class ProductPage implements OnInit {
     }).subscribe({
       next: (data: any) => {
         this.presentAlert("Producto actualizado", "El producto fue actualizado con exito");
+        this.dbService.updateProduct(this.product_id, this.name, this.net_value, this.category);
       },
       error: (error: any) => {
-  
         this.presentAlert("Error", "No se pudo actualizar el producto");
-        return []
       },
     });
   }
@@ -81,6 +83,7 @@ export class ProductPage implements OnInit {
     this.api.deleteProduct(this.product_id).subscribe({
       next: (data: any) => {
         this.presentAlert("Producto eliminado", "El producto fue eliminado con exito");
+        this.dbService.deleteProduct(this.product_id);
         this.router.navigate(['/calculator']);
       },
       error: (error: any) => {
