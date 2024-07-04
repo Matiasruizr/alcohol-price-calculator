@@ -1,12 +1,15 @@
 import { TestBed } from '@angular/core/testing';
 
 import { DbTaskService } from './db-task.service';
+import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
 
 describe('DbTaskService', () => {
   let service: DbTaskService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      providers: [SQLite]
+    });
     service = TestBed.inject(DbTaskService);
   });
 

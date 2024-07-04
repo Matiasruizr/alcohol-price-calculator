@@ -17,8 +17,6 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit() {
-    this.presentAlert("Bienvenido", "Por favor inicie sesión")
-
     this.active_session = localStorage.getItem('active_session');
 
     if (this.active_session === 'si') {

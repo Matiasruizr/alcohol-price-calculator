@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { MarketMarginsPageRoutingModule } from './market-margins-routing.module';
 
 import { MarketMarginsPage } from './market-margins.page';
-import {MatTableModule} from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
 
 
 
