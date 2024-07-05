@@ -23,4 +23,26 @@ describe('LoginPage', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should have a ion-title with value Inicio de sesión', () => {
+    const title = fixture.nativeElement.querySelector('ion-title');
+    expect(title.textContent).toEqual('Inicio de sesión');
+  });
+
+  it('should have a text input with placeholder "Ingresa tu usuario"', () => {
+    const input = fixture.nativeElement.querySelector('#email_input');
+    expect(input.getAttribute('placeholder')).toEqual('Ingresa tu usuario');
+  });
+
+  it('should have a text input with placeholder "Contraseña"', () => {
+    const input = fixture.nativeElement.querySelector('#password_input');
+    expect(input.getAttribute('placeholder')).toEqual('Ingresa tu contraseña');
+  });
+
+  it('should have a button that calls login method on click', () => {
+    const button = fixture.nativeElement.querySelector('#login-button');
+    spyOn(component, 'login');
+    button.click();
+    expect(component.login).toHaveBeenCalled();
+  });
 });

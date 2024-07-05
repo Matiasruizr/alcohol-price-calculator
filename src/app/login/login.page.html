@@ -25,6 +25,7 @@
           label-placement="stacked"
           placeholder="Ingresa tu usuario"
           type="text"
+          id="email_input"
           [(ngModel)]="usuario"
           minlength="4"
           maxlength="15"></ion-input>
@@ -33,7 +34,9 @@
       <ion-item class="ion-margin">
         <ion-input
           label="Contraseña"
+          placeholder="Ingresa tu contraseña"
           label-placement="stacked"
+          id="password_input"
           type="password"
           [(ngModel)]="password"
           minlength="6"
@@ -42,7 +45,7 @@
     </ion-list>
 
     
-    <ion-button expand="block" class="ion-margin-top" (click)="login()">Ingresar</ion-button>
+    <ion-button id="login-button" expand="block" class="ion-margin-top" (click)="login()">Ingresar</ion-button>
   </ion-content>
 </ion-content>
 
