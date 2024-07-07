@@ -37,4 +37,9 @@ describe('CalculatorPage', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should have a ion-title with value Calculadora precio de venta', () => {
+    const title = fixture.nativeElement.querySelector('ion-title');
+    expect(title.textContent).toEqual('Calculadora precio de venta');
+  });
 });
